@@ -12,4 +12,3 @@ type PostRequest struct {
 	Eight string `json:"eight"`
 	Ninth string `json:"ninth"`
 }
-

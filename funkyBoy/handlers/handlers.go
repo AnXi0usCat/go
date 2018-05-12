@@ -41,20 +41,30 @@ func GetScaledValueTest(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(res)
 }
 
-
 func GetScaledValue(w http.ResponseWriter, r *http.Request){
 
 	decoder := json.NewDecoder(r.Body)
 	// make it of type interface so it could accept any value
 	req := make(map [string]interface{})
-
 	decoder.Decode(&req)
-	transform(req)
 
+	// if the payload is empty return a 404 =(
+	// this looks bad (maybe we don't need a struct for this)
+	// replace is as a map like the 200 response
+	if len(req) == 0 {
+
+		br := model.NewBadRequestResponse("Request Payload cannot be empty")
+		jbr, _ := json.Marshal(&br)
+		http.Error(w, string(jbr), http.StatusBadRequest)
+
+		log.Println("Request has an empty payload")
+		return
+	}
+
+	transform(req)
+	//is this the most elegant way of doing this?
 	resp := make(map [string]interface{})
 	resp["code"] = 200
 	resp["data"] = req
 	json.NewEncoder(w).Encode(resp)
 }
-
-

@@ -82,9 +82,5 @@ var ds TempDataStore = TempDataStore{
 	"ninth":   []float64{-100, 0, 0, 1},
 }
 
-func test() {
-
-}
-
 
 
